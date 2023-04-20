@@ -9,12 +9,13 @@ vec = pg.math.Vector2
 # player class
 
 class Player(Sprite):
+    
     def __init__(self, game):
         Sprite.__init__(self)
         # these are the properties
         self.game = game
-        self.image = pg.Surface((50,50))
-        self.image.fill(WHITE)
+        self.image = pg.image.load('MJ.jpg').convert_alpha()
+        self.image = pg.transform.scale(self.image, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH/2, HEIGHT/2)
         self.pos = vec(WIDTH/2, HEIGHT/2)

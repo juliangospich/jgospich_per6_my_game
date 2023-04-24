@@ -2,14 +2,16 @@ import pygame as pg
 from pygame.sprite import Sprite
 from settings import *
 from random import randint
+import sys
+
 
 
 vec = pg.math.Vector2
 
 # player class
 
+
 class Player(Sprite):
-    
     def __init__(self, game):
         Sprite.__init__(self)
         # these are the properties
@@ -24,30 +26,47 @@ class Player(Sprite):
         self.cofric = 0.1
         self.canjump = False
         self.standing = False
-    def input(self):
-        keystate = pg.key.get_pressed()
-        # if keystate[pg.K_w]:
-        #     self.acc.y = -PLAYER_ACC
-        if keystate[pg.K_a]:
-            self.acc.x = -PLAYER_ACC
-        # if keystate[pg.K_s]:
-        #     self.acc.y = PLAYER_ACC
-        if keystate[pg.K_d]:
-            self.acc.x = PLAYER_ACC
-        # if keystate[pg.K_p]:
-        #     if PAUSED == False:
-        #         PAUSED = True
-        #         print(PAUSED)
-        #     else:
-        #         PAUSED = False
-        #         print(PAUSED)
-    # ...
+        self.num_jumps = 0 # new attribute to track number of jumps
+           
     def jump(self):
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.x -= 1
-        # if hits:
-        self.vel.y = -PLAYER_JUMP
+        if hits and (self.num_jumps == 0):
+            self.vel.y = -PLAYER_JUMP
+            self.canjump = True
+            self.num_jumps += 1 # increment num_jumps when the player jumps
+        elif self.num_jumps == 1: # check if the player has landed on the ground more than once
+            self.game_over()
+    
+    def game_over(self):
+        print("Game over!")
+        # You can add more actions here, like displaying a game over screen or resetting the game.
+    
+    def update(self):
+        self.acc = vec(0, PLAYER_GRAV)
+        self.acc.x = self.vel.x * PLAYER_FRICTION
+        self.input()
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+        self.rect.midbottom = self.pos
+
+    def input(self):
+        keys = pg.key.get_pressed()
+        if keys[pg.K_LEFT] or keys[pg.K_a]:
+            self.acc.x = -PLAYER_ACC
+        if keys[pg.K_RIGHT] or keys[pg.K_d]:
+            self.acc.x = PLAYER_ACC
+        if keys[pg.K_UP] or keys[pg.K_w]:
+            if self.canjump:
+                self.jump()
+        if keys[pg.K_ESCAPE]:
+            pg.quit()
+            sys.exit()
+
+
+        
+
     
     def inbounds(self):
         if self.rect.x > WIDTH - 50:
@@ -68,6 +87,7 @@ class Player(Sprite):
                 print("you collided with an enemy...")
                 self.game.score += 1
                 print(SCORE)
+       
     def update(self):
         self.acc = vec(0, PLAYER_GRAV)
         self.acc.x = self.vel.x * PLAYER_FRICTION

@@ -26,22 +26,31 @@ class Player(Sprite):
         self.cofric = 0.1
         self.canjump = False
         self.standing = False
-        self.num_jumps = 0 # new attribute to track number of jumps
+        self.num_jumps = 0
+        self.max_jumps = 4  # new attribute to allow four jumps
            
     def jump(self):
-        self.rect.x += 1
+        self.rect.x += 2
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-        self.rect.x -= 1
-        if hits and (self.num_jumps == 0):
+        self.rect.x -= 2
+        if hits and (self.num_jumps < self.max_jumps):  # check if max_jumps is not reached
             self.vel.y = -PLAYER_JUMP
             self.canjump = True
-            self.num_jumps += 1 # increment num_jumps when the player jumps
-        elif self.num_jumps == 1: # check if the player has landed on the ground more than once
+            self.num_jumps += 1  # increment num_jumps when the player jumps
+        elif self.num_jumps >= self.max_jumps:  # check if max_jumps is reached
             self.game_over()
     
     def game_over(self):
-        print("Game over!")
-        # You can add more actions here, like displaying a game over screen or resetting the game.
+        self.game.screen.fill((0, 0, 0))  # fill screen with orange
+        font = pg.font.Font(None, 48)  # create a font object
+        text = font.render("Game Over", True, (255, 255, 255))  # create a text object
+        text_rect = text.get_rect()  # get the rectangle of the text object
+        text_rect.center = (WIDTH/2, HEIGHT/2)  # center the rectangle on the screen
+        self.game.screen.blit(text, text_rect)  # draw the text object on the screen
+        pg.display.flip()  # update the screen
+        pg.time.wait(3000)  # wait for 3 seconds
+        pg.quit()  # quit pygame
+        sys.exit()  # exit the program
     
     def update(self):
         self.acc = vec(0, PLAYER_GRAV)
@@ -50,6 +59,10 @@ class Player(Sprite):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         self.rect.midbottom = self.pos
+        
+        # check if player falls off the screen
+        if self.rect.top > HEIGHT:
+            self.game_over()
 
     def input(self):
         keys = pg.key.get_pressed()

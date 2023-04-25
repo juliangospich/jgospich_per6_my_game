@@ -1,4 +1,4 @@
-# File created by: Chris Cozort
+# File created by: Julian Gospich
 # Agenda:
 # gIT GITHUB    
 # Build file and folder structures
@@ -33,7 +33,9 @@ class Game:
         pg.display.set_caption("my game")
         self.clock = pg.time.Clock()
         self.running = True
+        self.score = 0
         print(self.screen)
+    
     def new(self):
         # starting a new game
         self.score = 0
@@ -94,10 +96,10 @@ class Game:
                 self.player.standing = False
 
     def draw(self):
-        self.screen.fill(RED)
+        self.screen.fill(WHITE)
         self.all_sprites.draw(self.screen)
         if self.player.standing:
-            self.draw_text("I hit a plat!", 24, BLACK, WIDTH/2, HEIGHT/2)
+            self.draw_text("U on a plat lil man!", 24, RED, WIDTH/2, HEIGHT/2)
         # is this a method or a function?
         pg.display.flip()
     def draw_text(self, text, size, color, x, y):

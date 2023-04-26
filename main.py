@@ -35,7 +35,9 @@ class Game:
         self.running = True
         self.score = 0
         print(self.screen)
-    
+    def game_over(self):
+        if self.player.pos.x > 800 or self.player.pos.x < 0:
+            self.player.death = True
     def new(self):
         # starting a new game
         self.score = 0
@@ -78,7 +80,7 @@ class Game:
                     self.player.jump()
     def update(self):
         self.all_sprites.update()
-        
+        self.game_over()
         # if the player is falling
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
@@ -101,6 +103,9 @@ class Game:
         if self.player.standing:
             self.draw_text("U on a plat lil man!", 24, RED, WIDTH/2, HEIGHT/2)
         # is this a method or a function?
+        if self.player.death == True: 
+            self.screen.fill(BLACK)
+            self.draw_text("Game over", 24, WHITE, WIDTH/2, HEIGHT/2 )
         pg.display.flip()
     def draw_text(self, text, size, color, x, y):
         font_name = pg.font.match_font('arial')

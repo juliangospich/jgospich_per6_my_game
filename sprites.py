@@ -41,9 +41,9 @@ class Player(Sprite):
             self.game_over()
     
     def game_over(self):
-        self.game.screen.fill((0, 0, 0))  # fill screen with orange
+        self.game.screen.fill((0, 0, 0))  # fill screen with black
         font = pg.font.Font(None, 48)  # create a font object
-        text = font.render("Game Over", True, (255, 255, 255))  # create a text object
+        text = font.render("You have won it Your the champion!!!", True, (255, 255, 255))  # create a text object
         text_rect = text.get_rect()  # get the rectangle of the text object
         text_rect.center = (WIDTH/2, HEIGHT/2)  # center the rectangle on the screen
         self.game.screen.blit(text, text_rect)  # draw the text object on the screen

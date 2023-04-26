@@ -88,7 +88,7 @@ class Game:
                 self.player.standing = True
                 if hits[0].variant == "disappearing":
                     hits[0].kill()
-                elif hits[0].variaant == "bouncey":
+                elif hits[0].variant == "bouncey":
                     self.player.pos.y = hits[0].rect.top
                     self.player.vel.y = -PLAYER_JUMP
                 else:
@@ -101,7 +101,7 @@ class Game:
         self.screen.fill(WHITE)
         self.all_sprites.draw(self.screen)
         if self.player.standing:
-            self.draw_text("You have four jumps, if you go off the screen you lose, stay in the screen and you win", 24, RED, WIDTH/2, HEIGHT/2)
+            self.draw_text("You have four jumps, if you go off screen you lose stay in screen to win", 24, RED, WIDTH/2, HEIGHT/2)
         # is this a method or a function?
         if self.player.death == True: 
             self.screen.fill(BLACK)

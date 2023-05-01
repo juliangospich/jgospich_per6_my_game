@@ -5,10 +5,10 @@
 # Create libraries
 # testing github changes
 # I changed something - I changed something else tooooo!
-
-# This file was created by: Chris Cozort
 # Sources: http://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
-# Sources: 
+# Sources: https://www.w3schools.com/
+# Sources: https://www.w3schools.com/c/c_syntax.php
+# Sources: https://www.w3schools.com/c/c_data_types.php
 
 # import libs
 import pygame as pg
